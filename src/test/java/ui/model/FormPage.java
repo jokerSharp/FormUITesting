@@ -6,6 +6,9 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.Select;
 import ui.model.base.BasePage;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class FormPage extends BasePage {
 
     @FindBy(id = "dataEmail")
@@ -24,13 +27,13 @@ public class FormPage extends BasePage {
     private WebElement checkBox12;
 
     @FindBy(id = "dataSelect21")
-    private WebElement checkBox21;
+    private WebElement radioButton21;
 
     @FindBy(id = "dataSelect22")
-    private WebElement checkBox22;
+    private WebElement radioButton22;
 
     @FindBy(id = "dataSelect23")
-    private WebElement checkBox23;
+    private WebElement radioButton23;
 
     @FindBy(id = "dataSend")
     private WebElement submitButton;
@@ -38,8 +41,14 @@ public class FormPage extends BasePage {
     @FindBy(id = "dataTable")
     private WebElement userTable;
 
-    @FindBy(xpath = "//*[@id=\"dataTable\"]/tbody/tr[1]/td[1]")
-    private WebElement userNameFromTable;
+    @FindBy(xpath = "//table/tbody/tr[1]/td")
+    private List<WebElement> firstRowOfUserTable;
+
+    @FindBy(id = "emailFormatError")
+    private WebElement wrongEmailFormatMessage;
+
+    @FindBy(id = "blankNameError")
+    private WebElement blankNameMessage;
 
     public FormPage(WebDriver driver) {
         super(driver);
@@ -69,6 +78,16 @@ public class FormPage extends BasePage {
         return new FormPage(getDriver());
     }
 
+    public FormPage selectGender(String gender) {
+        if (gender.equals("Мужской")) {
+            new Select(genderDropDownList).selectByIndex(0);
+        } else {
+            new Select(genderDropDownList).selectByIndex(1);
+        }
+
+        return new FormPage(getDriver());
+    }
+
     public FormPage tickCheckbox11() {
         checkBox11.click();
 
@@ -76,7 +95,7 @@ public class FormPage extends BasePage {
     }
 
     public FormPage tickCheckbox21() {
-        checkBox21.click();
+        radioButton21.click();
 
         return new FormPage(getDriver());
     }
@@ -92,7 +111,13 @@ public class FormPage extends BasePage {
 //        return new ConfirmationPage();
 //    }
 
-    public String getUserNameFromTable() {
-        return userNameFromTable.getText();
+    public List<String> getUserDataFromTable() {
+
+        return firstRowOfUserTable.stream().map(WebElement::getText).collect(Collectors.toList());
+    }
+
+    public enum Gender {
+        Male,
+        Female
     }
 }
