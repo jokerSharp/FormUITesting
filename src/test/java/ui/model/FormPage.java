@@ -66,18 +66,6 @@ public class FormPage extends BasePage {
         return new FormPage(getDriver());
     }
 
-    public FormPage selectMale() {
-        new Select(genderDropDownList).selectByIndex(0);
-
-        return new FormPage(getDriver());
-    }
-
-    public FormPage selectFemale() {
-        new Select(genderDropDownList).selectByValue("Женский");
-
-        return new FormPage(getDriver());
-    }
-
     public FormPage selectGender(String gender) {
         if (gender.equals("Мужской")) {
             new Select(genderDropDownList).selectByIndex(0);
@@ -94,8 +82,26 @@ public class FormPage extends BasePage {
         return new FormPage(getDriver());
     }
 
-    public FormPage tickCheckbox21() {
+    public FormPage tickCheckbox12() {
+        checkBox12.click();
+
+        return new FormPage(getDriver());
+    }
+
+    public FormPage selectRadiobutton21() {
         radioButton21.click();
+
+        return new FormPage(getDriver());
+    }
+
+    public FormPage selectRadiobutton22() {
+        radioButton22.click();
+
+        return new FormPage(getDriver());
+    }
+
+    public FormPage selectRadiobutton23() {
+        radioButton23.click();
 
         return new FormPage(getDriver());
     }
@@ -106,18 +112,9 @@ public class FormPage extends BasePage {
         return new ConfirmationPage(getDriver());
     }
 
-//    public List<String> getUserData() {
-//
-//        return new ConfirmationPage();
-//    }
-
     public List<String> getUserDataFromTable() {
 
         return firstRowOfUserTable.stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
-    public enum Gender {
-        Male,
-        Female
-    }
 }
