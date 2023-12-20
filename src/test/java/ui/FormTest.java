@@ -3,8 +3,6 @@ package ui;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import ui.model.FormPage;
-import ui.model.FormPage.Gender;
 import ui.model.LoginPage;
 import ui.runner.BaseTest;
 
@@ -23,22 +21,127 @@ public class FormTest extends BaseTest {
     }
 
     @Test(dataProvider = "providePositiveData")
-    public void addNewUser(String email, String name, String gender) {
+    public void testAddNewUser(String email, String name, String gender) {
         List<String> actualUserData = new LoginPage(getDriver())
                 .login()
                 .inputEMail(email)
                 .inputUserName(name)
                 .selectGender(gender)
-                .tickCheckbox11()
-                .tickCheckbox21()
                 .clickSubmit()
                 .clickOk()
                 .getUserDataFromTable();
 
-        System.out.println(actualUserData);
-
         Assert.assertTrue(actualUserData.get(0).equals(email)
                 && actualUserData.get(1).equals(name)
                 && actualUserData.get(2).equals(gender));
+    }
+
+    @Test
+    public void testTickCheckBox11() {
+        List<String> actualUserData = new LoginPage(getDriver())
+                .login().inputEMail(EMAIL)
+                .inputUserName(USER_NAME)
+                .tickCheckbox11()
+                .clickSubmit()
+                .clickOk()
+                .getUserDataFromTable();
+
+        Assert.assertTrue(actualUserData.contains("1.1"));
+    }
+
+    @Test
+    public void testTickCheckBox12() {
+        List<String> actualUserData = new LoginPage(getDriver())
+                .login().inputEMail(EMAIL)
+                .inputUserName(USER_NAME)
+                .tickCheckbox12()
+                .clickSubmit()
+                .clickOk()
+                .getUserDataFromTable();
+
+        Assert.assertTrue(actualUserData.contains("1.2"));
+    }
+
+    @Test
+    public void testTickAllCheckBoxes() {
+        List<String> actualUserData = new LoginPage(getDriver())
+                .login().inputEMail(EMAIL)
+                .inputUserName(USER_NAME)
+                .tickCheckbox11()
+                .tickCheckbox12()
+                .clickSubmit()
+                .clickOk()
+                .getUserDataFromTable();
+
+        Assert.assertTrue(actualUserData.contains("1.1, 1.2"));
+    }
+
+    @Test
+    public void testUntickAllCheckBoxes() {
+        List<String> actualUserData = new LoginPage(getDriver())
+                .login().inputEMail(EMAIL)
+                .inputUserName(USER_NAME)
+                .tickCheckbox11()
+                .tickCheckbox11()
+                .tickCheckbox12()
+                .tickCheckbox12()
+                .clickSubmit()
+                .clickOk()
+                .getUserDataFromTable();
+
+        Assert.assertTrue(actualUserData.contains("Нет"));
+    }
+
+    @Test
+    public void testSelectRadiobutton21() {
+        List<String> actualUserData = new LoginPage(getDriver())
+                .login().inputEMail(EMAIL)
+                .inputUserName(USER_NAME)
+                .selectRadiobutton21()
+                .clickSubmit()
+                .clickOk()
+                .getUserDataFromTable();
+
+        Assert.assertTrue(actualUserData.contains("2.1"));
+    }
+
+    @Test
+    public void testSelectRadiobutton22() {
+        List<String> actualUserData = new LoginPage(getDriver())
+                .login().inputEMail(EMAIL)
+                .inputUserName(USER_NAME)
+                .selectRadiobutton22()
+                .clickSubmit()
+                .clickOk()
+                .getUserDataFromTable();
+
+        Assert.assertTrue(actualUserData.contains("2.2"));
+    }
+
+    @Test
+    public void testSelectRadiobutton23() {
+        List<String> actualUserData = new LoginPage(getDriver())
+                .login().inputEMail(EMAIL)
+                .inputUserName(USER_NAME)
+                .selectRadiobutton23()
+                .clickSubmit()
+                .clickOk()
+                .getUserDataFromTable();
+
+        Assert.assertTrue(actualUserData.contains("2.3"));
+    }
+
+    @Test
+    public void testReselectRadiobutton() {
+        List<String> actualUserData = new LoginPage(getDriver())
+                .login().inputEMail(EMAIL)
+                .inputUserName(USER_NAME)
+                .selectRadiobutton21()
+                .selectRadiobutton23()
+                .clickSubmit()
+                .clickOk()
+                .getUserDataFromTable();
+
+        Assert.assertTrue(actualUserData.contains("2.3"));
     }
 }
