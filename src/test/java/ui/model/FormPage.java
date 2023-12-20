@@ -1,5 +1,6 @@
 package ui.model;
 
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -49,10 +50,6 @@ public class FormPage extends BasePage {
 
     @FindBy(id = "blankNameError")
     private WebElement blankNameMessage;
-
-    public FormPage(WebDriver driver) {
-        super(driver);
-    }
 
     public FormPage inputEMail(String email) {
         emailInputField.sendKeys(email);
@@ -117,4 +114,41 @@ public class FormPage extends BasePage {
         return firstRowOfUserTable.stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
+    public String getEmailWarningText() {
+
+        return wrongEmailFormatMessage.getText();
+    }
+
+    public boolean isEmailWarningDisplayed() {
+        boolean isDisplayed = false;
+        try {
+            isDisplayed = wrongEmailFormatMessage.isDisplayed();
+        } catch (NoSuchElementException ignore) {}
+
+        return isDisplayed;
+    }
+
+    public String getNameWarningText() {
+
+        return wrongEmailFormatMessage.getText();
+    }
+
+    public boolean isNameWarningDisplayed() {
+        boolean isDisplayed = false;
+        try {
+            isDisplayed = blankNameMessage.isDisplayed();
+        } catch (NoSuchElementException ignore) {}
+
+        return isDisplayed;
+    }
+
+    public FormPage clickSubmitWithError() {
+        submitButton.click();
+
+        return new FormPage(getDriver());
+    }
+
+    public FormPage(WebDriver driver) {
+        super(driver);
+    }
 }

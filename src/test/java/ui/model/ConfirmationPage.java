@@ -7,10 +7,6 @@ import ui.model.base.BasePage;
 
 public class ConfirmationPage extends BasePage {
 
-    public ConfirmationPage(WebDriver driver) {
-        super(driver);
-    }
-
     @FindBy(xpath = "//button[text()='Ok']")
     private WebElement okButton;
 
@@ -18,5 +14,9 @@ public class ConfirmationPage extends BasePage {
         okButton.click();
 
         return new FormPage(getDriver());
+    }
+
+    public ConfirmationPage(WebDriver driver) {
+        super(driver);
     }
 }
