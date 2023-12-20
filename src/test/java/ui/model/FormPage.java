@@ -45,8 +45,7 @@ public class FormPage extends BasePage {
     @FindBy(xpath = "//table/tbody/tr[1]/td")
     private List<WebElement> firstRowOfUserTable;
 
-    @FindBy(id = "emailFormatError")
-    private WebElement wrongEmailFormatMessage;
+
 
     @FindBy(id = "blankNameError")
     private WebElement blankNameMessage;
@@ -114,24 +113,7 @@ public class FormPage extends BasePage {
         return firstRowOfUserTable.stream().map(WebElement::getText).collect(Collectors.toList());
     }
 
-    public String getEmailWarningText() {
 
-        return wrongEmailFormatMessage.getText();
-    }
-
-    public boolean isEmailWarningDisplayed() {
-        boolean isDisplayed = false;
-        try {
-            isDisplayed = wrongEmailFormatMessage.isDisplayed();
-        } catch (NoSuchElementException ignore) {}
-
-        return isDisplayed;
-    }
-
-    public String getNameWarningText() {
-
-        return wrongEmailFormatMessage.getText();
-    }
 
     public boolean isNameWarningDisplayed() {
         boolean isDisplayed = false;
@@ -146,6 +128,15 @@ public class FormPage extends BasePage {
         submitButton.click();
 
         return new FormPage(getDriver());
+    }
+
+    public boolean isTableDisplayed() {
+        boolean isDisplayed = false;
+        try {
+            isDisplayed = userTable.isDisplayed();
+        } catch (NoSuchElementException ignore) {}
+
+        return isDisplayed;
     }
 
     public FormPage(WebDriver driver) {
