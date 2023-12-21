@@ -9,22 +9,22 @@ import org.testng.annotations.BeforeMethod;
 import java.net.URL;
 
 public abstract class BaseTest {
-    private static WebDriver driver;
+    private WebDriver driver;
 
-    public static WebDriver getDriver() {
+    public WebDriver getDriver() {
         return driver;
     }
 
     @BeforeMethod
-    public static void setUp() {
+    public void setUp() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
-        URL htmlFile = BaseTest.class.getClassLoader().getResource("qa-test.html");
+        URL htmlFile = getClass().getClassLoader().getResource("qa-test.html");
         driver.get(htmlFile.toString());
     }
 
     @AfterMethod
-    public static void teatDown() {
+    public void tearDown() {
         driver.quit();
     }
 }
