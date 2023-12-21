@@ -3,7 +3,6 @@ package ui;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import ui.model.FormPage;
 import ui.model.LoginPage;
 import ui.runner.BaseTest;
 
@@ -11,6 +10,8 @@ public class LoginTest extends BaseTest {
     private static final String EMAIL = "test@protei.ru";
     private static final String EMAIL_NEGATIVE = "test";
     private static final String PASSWORD = "test";
+    private static final String EMAIL_VALIDATION_MESSAGE = "Неверный формат E-Mail";
+    private static final String CREDENTIALS_VALIDATION_MESSAGE = "Неверный E-Mail или пароль";
 
     @DataProvider
     public Object[][] provideNegativeEmailData() {
@@ -60,7 +61,7 @@ public class LoginTest extends BaseTest {
                 .inputEmail(EMAIL)
                 .inputPassword(password)
                 .clickSubmitWithError()
-                .isWarningMessageDisplayed();
+                .isPasswordWarningMessageDisplayed();
 
         Assert.assertTrue(isWarningDisplayed);
     }
@@ -70,9 +71,29 @@ public class LoginTest extends BaseTest {
         boolean isDisplayed = new LoginPage(getDriver())
                 .inputEmail(EMAIL_NEGATIVE)
                 .clickSubmitWithError()
-                .closeAlert(new LoginPage(getDriver()))
+                .clickCloseAlert()
                 .isEmailWarningDisplayed();
 
         Assert.assertFalse(isDisplayed);
+    }
+
+    @Test
+    public void testWarningEmailText() {
+        String actualMessage = new LoginPage(getDriver())
+                .inputEmail(EMAIL_NEGATIVE)
+                .clickSubmitWithError()
+                .getEmailWarningText();
+
+        Assert.assertEquals(actualMessage, EMAIL_VALIDATION_MESSAGE);
+    }
+
+    @Test
+    public void testWarningPasswordText() {
+        String actualMessage = new LoginPage(getDriver())
+                .inputEmail(EMAIL)
+                .clickSubmitWithError()
+                .getPasswordWarningText();
+
+        Assert.assertEquals(actualMessage, CREDENTIALS_VALIDATION_MESSAGE);
     }
 }

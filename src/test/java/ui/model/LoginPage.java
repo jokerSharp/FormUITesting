@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import ui.model.base.BasePage;
 
-public class LoginPage extends BasePage {
+public class LoginPage extends BasePage<LoginPage> {
     private static final String EMAIL = "test@protei.ru";
     private static final String PASSWORD = "test";
     @FindBy(id = "loginEmail")
@@ -53,13 +53,22 @@ public class LoginPage extends BasePage {
         return new LoginPage(getDriver());
     }
 
-    public boolean isWarningMessageDisplayed() {
+    public boolean isPasswordWarningMessageDisplayed() {
         boolean isDisplayed = false;
         try {
             isDisplayed = emailPasswordWarningMessage.isDisplayed();
         } catch (NoSuchElementException ignore) {}
 
         return isDisplayed;
+    }
+
+    public String getPasswordWarningText() {
+        return emailPasswordWarningMessage.getText();
+    }
+
+    @Override
+    protected LoginPage createPage() {
+        return new LoginPage(getDriver());
     }
 
     public LoginPage(WebDriver driver) {
