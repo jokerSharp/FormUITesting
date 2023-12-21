@@ -3,13 +3,17 @@ package ui.model.base;
 import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 public abstract class BasePage {
     private final WebDriver driver;
-    @FindBy(id = "emailFormatError")
+    @FindBy(xpath = "//div[@id='emailFormatError']")
     private WebElement wrongEmailFormatMessage;
+
+    @FindBy(className = "uk-alert-close")
+    private WebElement closeAlertButton;
 
     public String getEmailWarningText() {
 
@@ -25,9 +29,13 @@ public abstract class BasePage {
         return isDisplayed;
     }
 
-    public String getNameWarningText() {
+    public <T extends BasePage> T  closeAlert(T page) {
+        new Actions(getDriver())
+                .click(closeAlertButton)
+                .pause(300)
+                .perform();
 
-        return wrongEmailFormatMessage.getText();
+        return page;
     }
 
     protected WebDriver getDriver() {

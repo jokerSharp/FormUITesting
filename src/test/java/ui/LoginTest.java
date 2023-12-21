@@ -3,11 +3,13 @@ package ui;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import ui.model.FormPage;
 import ui.model.LoginPage;
 import ui.runner.BaseTest;
 
 public class LoginTest extends BaseTest {
     private static final String EMAIL = "test@protei.ru";
+    private static final String EMAIL_NEGATIVE = "test";
     private static final String PASSWORD = "test";
 
     @DataProvider
@@ -61,5 +63,16 @@ public class LoginTest extends BaseTest {
                 .isWarningMessageDisplayed();
 
         Assert.assertTrue(isWarningDisplayed);
+    }
+
+    @Test
+    public void testCloseWarningMessage() {
+        boolean isDisplayed = new LoginPage(getDriver())
+                .inputEmail(EMAIL_NEGATIVE)
+                .clickSubmitWithError()
+                .closeAlert(new LoginPage(getDriver()))
+                .isEmailWarningDisplayed();
+
+        Assert.assertFalse(isDisplayed);
     }
 }

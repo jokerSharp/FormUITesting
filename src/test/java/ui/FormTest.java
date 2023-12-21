@@ -3,6 +3,7 @@ package ui;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import ui.model.FormPage;
 import ui.model.LoginPage;
 import ui.runner.BaseTest;
 
@@ -12,6 +13,7 @@ public class FormTest extends BaseTest {
     private final static String EMAIL = "test@test.com";
     private final static String USER_NAME = "User Name";
     private final static String XSS_SCRIPT = "<script>alert(‘XSS’)</script>";
+    private final static String EMAIL_NEGATIVE = "test";
 
     @DataProvider
     public Object[][] providePositiveData() {
@@ -207,5 +209,28 @@ public class FormTest extends BaseTest {
                 .getUserDataFromTable();
 
         Assert.assertTrue(actualUserData.contains(XSS_SCRIPT));
+    }
+
+    @Test
+    public void testWarningMessageText() {
+        String actualMessage = new LoginPage(getDriver())
+                .login()
+                .inputEMail(EMAIL_NEGATIVE)
+                .clickSubmitWithError()
+                .getEmailWarningText();
+
+        Assert.assertEquals(actualMessage, "Неверный формат E-Mail");
+    }
+
+    @Test
+    public void testCloseWarningMessage() {
+        boolean isDisplayed = new LoginPage(getDriver())
+                .login()
+                .inputEMail(EMAIL_NEGATIVE)
+                .clickSubmitWithError()
+                .closeAlert(new FormPage(getDriver()))
+                .isEmailWarningDisplayed();
+
+        Assert.assertFalse(isDisplayed);
     }
 }

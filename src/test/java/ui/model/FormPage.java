@@ -45,8 +45,6 @@ public class FormPage extends BasePage {
     @FindBy(xpath = "//table/tbody/tr[1]/td")
     private List<WebElement> firstRowOfUserTable;
 
-
-
     @FindBy(id = "blankNameError")
     private WebElement blankNameMessage;
 
@@ -112,8 +110,6 @@ public class FormPage extends BasePage {
 
         return firstRowOfUserTable.stream().map(WebElement::getText).collect(Collectors.toList());
     }
-
-
 
     public boolean isNameWarningDisplayed() {
         boolean isDisplayed = false;
