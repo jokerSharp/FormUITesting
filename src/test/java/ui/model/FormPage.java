@@ -10,7 +10,7 @@ import ui.model.base.BasePage;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class FormPage extends BasePage {
+public class FormPage extends BasePage<FormPage> {
 
     @FindBy(id = "dataEmail")
     private WebElement emailInputField;
@@ -133,6 +133,11 @@ public class FormPage extends BasePage {
         } catch (NoSuchElementException ignore) {}
 
         return isDisplayed;
+    }
+
+    @Override
+    protected FormPage createPage() {
+        return new FormPage(getDriver());
     }
 
     public FormPage(WebDriver driver) {

@@ -7,7 +7,7 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public abstract class BasePage {
+public abstract class BasePage<Page extends BasePage> {
     private final WebDriver driver;
     @FindBy(xpath = "//div[@id='emailFormatError']")
     private WebElement wrongEmailFormatMessage;
@@ -15,8 +15,18 @@ public abstract class BasePage {
     @FindBy(className = "uk-alert-close")
     private WebElement closeAlertButton;
 
-    public String getEmailWarningText() {
+    protected abstract Page createPage();
 
+    public Page clickCloseAlert() {
+        new Actions(getDriver())
+                .click(closeAlertButton)
+                .pause(300)
+                .perform();
+
+        return createPage();
+    }
+
+    public String getEmailWarningText() {
         return wrongEmailFormatMessage.getText();
     }
 
@@ -27,15 +37,6 @@ public abstract class BasePage {
         } catch (NoSuchElementException ignore) {}
 
         return isDisplayed;
-    }
-
-    public <T extends BasePage> T  closeAlert(T page) {
-        new Actions(getDriver())
-                .click(closeAlertButton)
-                .pause(300)
-                .perform();
-
-        return page;
     }
 
     protected WebDriver getDriver() {

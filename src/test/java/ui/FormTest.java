@@ -14,6 +14,7 @@ public class FormTest extends BaseTest {
     private final static String USER_NAME = "User Name";
     private final static String XSS_SCRIPT = "<script>alert(‘XSS’)</script>";
     private final static String EMAIL_NEGATIVE = "test";
+    private static final String EMAIL_VALIDATION_MESSAGE = "Неверный формат E-Mail";
 
     @DataProvider
     public Object[][] providePositiveData() {
@@ -219,7 +220,7 @@ public class FormTest extends BaseTest {
                 .clickSubmitWithError()
                 .getEmailWarningText();
 
-        Assert.assertEquals(actualMessage, "Неверный формат E-Mail");
+        Assert.assertEquals(actualMessage, EMAIL_VALIDATION_MESSAGE);
     }
 
     @Test
@@ -228,7 +229,7 @@ public class FormTest extends BaseTest {
                 .login()
                 .inputEMail(EMAIL_NEGATIVE)
                 .clickSubmitWithError()
-                .closeAlert(new FormPage(getDriver()))
+                .clickCloseAlert()
                 .isEmailWarningDisplayed();
 
         Assert.assertFalse(isDisplayed);
